@@ -9,6 +9,7 @@ Build-Depends: autotools-dev,
                libcairo2-dev (>= 1.10),
                libglib2.0-dev (>= 2.26.0),
                libgtk-3-dev (>= 3.5.2),
+               bzr (>= 2.6.0~bzr6520)
 Standards-Version: 3.9.6
 Homepage: https://launchpad.net/unico
 

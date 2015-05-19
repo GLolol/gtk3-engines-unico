@@ -1,13 +1,20 @@
-gtk3-engines-unico (1.0.3+14.04.20140109+repack1-1) unstable; urgency=medium
+gtk3-engines-unico (1.0.3+bzr152-1) unstable; urgency=medium
 
-  * New upstream snapshot, forked from Ubuntu (Closes: #671936, #690278,
-    #695267).
+  * New upstream snapshot. (Closes: #671936, #690278, #695267).
   * New maintainer. (Closes: #717044)
-  * Repack tarball in order to remove the INSTALL symlink in the
-    root folder, fixing Lintian error unsafe-symlink-in-source.
-  * Update Standards Version to 3.9.6.
+  * debian/ folder updates:
+     - Update Standards Version to 3.9.6.
+     - Merge from Ubuntu, bumping build-depends to libcairo2-dev >= 1.10,
+       libglib2.0-dev >= 2.26.0, libgtk-3-dev >= 3.5.2, debhelper >=9,
+       and adding a build-dep on gnome-common.
+     - Changed section from gnome to x11, since the theme engine can
+       be used outside GNOME.
+     - Merged debian/copyright changes from both 1.0.2-1 and Ubuntu.
+     - rules: add get-orig-source fetching the tarball and removing
+       an extra INSTALL symlink.
+     - Add bzr (>= 2.6.0~bzr6520) to build-depends, for get-orig-source.
 
- -- James Lu <glolol1@hotmail.com>  Fri, 08 May 2015 17:40:58 -0700
+ -- James Lu <glolol1@hotmail.com>  Mon, 18 May 2015 17:15:14 -0700
 
 gtk3-engines-unico (1.0.2-1) unstable; urgency=low
 

@@ -15,3 +15,21 @@ override_dh_install:
 	find debian/gtk3-engines-unico/usr/lib -name \*.la -exec rm {} \;
 	find debian/gtk3-engines-unico/usr/lib -name \*.a -exec rm {} \;
 	dh_install --fail-missing
+
+## checkout from bzr - modified from https://wiki.debian.org/onlyjob/get-orig-source
+UURL = lp:unico
+PKG  = $(shell dpkg-parsechangelog --show-field=Source)
+VER = $(shell dpkg-parsechangelog --show-field=Version | cut -d '-' -f 1)
+REV = $(shell echo $(VER) | perl -ne 'print "$$1" if m/(?:bzr)(\d+)/;')
+
+.PHONY: get-orig-source
+
+get-orig-source: $(info I: $(PKG)_$(VER) (rev: $(REV)))
+	$(if $(wildcard $(PKG)-$(VER)),$(error $(PKG)-$(VER) exists, aborting..))
+	bzr checkout --hardlink --lightweight --revision=$(REV) $(UURL) $(PKG)-$(VER)
+	@echo "# Clean-up..."
+	$(RM) -r -v $(PKG)-$(VER)/INSTALL
+	@echo "# Packing..."
+	cd "$(PKG)-$(VER)" && find -L . -xdev -type f -not -path '*/\.*' -print | LC_ALL=C sort \
+	| tar -caf "../../$(PKG)_$(VER).orig.tar.xz" --owner=root --group=root --mode=a+rX -T -
+	$(RM) -r "$(PKG)-$(VER)"
