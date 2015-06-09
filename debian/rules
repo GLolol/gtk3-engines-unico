@@ -21,14 +21,18 @@ UURL = lp:unico
 PKG  = $(shell dpkg-parsechangelog --show-field=Source)
 VER = $(shell dpkg-parsechangelog --show-field=Version | cut -d '-' -f 1)
 REV = $(shell echo $(VER) | perl -ne 'print "$$1" if m/(?:bzr)(\d+)/;')
+BUILD_DATE := $(shell dpkg-parsechangelog --show-field=Date)
 
 .PHONY: get-orig-source
 
 get-orig-source: $(info I: $(PKG)_$(VER) (rev: $(REV)))
 	$(if $(wildcard $(PKG)-$(VER)),$(error $(PKG)-$(VER) exists, aborting..))
-	bzr checkout --hardlink --lightweight --revision=$(REV) $(UURL) $(PKG)-$(VER)
-	@echo "# Clean-up..."
+	bzr checkout --revision=$(REV) $(UURL) $(PKG)-$(VER)
+	@echo "# Removing extraneous symlinks..."
 	$(RM) -r -v $(PKG)-$(VER)/INSTALL
+	@echo "# Using $(BUILD_DATE) (last changelog revision date) as file timestamp for reproducible tarballs."
+	find '.' -newermt '$(BUILD_DATE)' -print0 | \
+        xargs -0r touch --no-dereference --date='$(BUILD_DATE)'
 	@echo "# Packing..."
 	cd "$(PKG)-$(VER)" && find -L . -xdev -type f -not -path '*/\.*' -print | LC_ALL=C sort \
 	| tar -caf "../../$(PKG)_$(VER).orig.tar.xz" --owner=root --group=root --mode=a+rX -T -

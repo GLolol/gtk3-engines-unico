@@ -9,12 +9,11 @@ gtk3-engines-unico (1.0.3+bzr152-1) unstable; urgency=medium
        and adding a build-dep on gnome-common.
      - Changed section from gnome to x11, since the theme engine can
        be used outside GNOME.
-     - Merged debian/copyright changes from both 1.0.2-1 and Ubuntu.
-     - rules: add get-orig-source fetching the tarball and removing
-       an extra INSTALL symlink.
-     - Add bzr (>= 2.6.0~bzr6520) to build-depends, for get-orig-source.
+     - Merged debian/copyright changes from Ubuntu.
+     - rules: add a get-orig-source target: This will fetch bzr sources,
+       set the correct file timestamp, and repack.
 
- -- James Lu <glolol1@hotmail.com>  Mon, 18 May 2015 17:15:14 -0700
+ -- James Lu <glolol1@hotmail.com>  Tue, 09 Jun 2015 16:43:27 -0700
 
 gtk3-engines-unico (1.0.2-1) unstable; urgency=low
 
